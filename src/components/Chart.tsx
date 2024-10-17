@@ -9,12 +9,15 @@ interface ChartProps {
 }
 
 const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => {
+  const maxHeight = Math.max(...array) || 0;
+
   return (
     <div className="w-full max-w-full mt-12">
       <div
-        className={`flex items-end justify-center h-auto bg-base-300 rounded-box p-4 border ${
+        className={`flex items-end justify-center bg-base-300 rounded-box p-4 border ${
           isSorted ? "border-success" : "border-white/[0.1]"
         }`}
+        style={{ height: `${maxHeight + 50}px` }}
       >
         {array.map((value, idx) => (
           <div

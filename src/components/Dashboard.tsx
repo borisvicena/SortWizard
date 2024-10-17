@@ -130,6 +130,8 @@ const Dashboard = () => {
     }
   };
 
+  console.log("MAX: " + maxValue);
+
   return (
     <main className="flex flex-col rounded-box mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-8 indicator">
       <span className="indicator-item badge badge-secondary">welcome</span>
