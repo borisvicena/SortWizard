@@ -86,7 +86,7 @@ const Dashboard = () => {
 
   return (
     <main className="container rounded-box mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-8">
-      <div className="font-bold text-2xl">Dashboard</div>
+      <div className="font-bold text-2xl">Dashboard 🪄 </div>
       <div className="mt-4 flex justify-start space-x-4">
         <button onClick={resetArray} disabled={isSorting} className="btn btn-sm btn-primary">
           Generate New Array
