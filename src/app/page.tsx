@@ -1,4 +1,5 @@
 import Chart from "@/components/Chart";
+import Dashboard from "@/components/Dashboard";
 import Navbar from "@/components/Navbar";
 
 export default function Home() {
@@ -6,9 +7,7 @@ export default function Home() {
     <>
       <div className="bg-base-100 min-h-screen">
         <Navbar />
-        <main className="container w-full max-w-3xl rounded-box mx-auto px-4 py-36">
-          <Chart />
-        </main>
+        <Dashboard />
       </div>
     </>
   );
