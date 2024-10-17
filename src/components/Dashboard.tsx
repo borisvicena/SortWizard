@@ -5,6 +5,8 @@ import Chart from "./Chart";
 import { delay, generateRandomArray } from "@/lib/utils";
 import { bubbleSort } from "@/lib/bubbleSort";
 import { quickSort } from "@/lib/quickSort";
+import { selectionSort } from "@/lib/selectionSort";
+import { insertionSort } from "@/lib/insertionSort";
 
 const Dashboard = () => {
   const [array, setArray] = useState<number[]>([]);
@@ -52,14 +54,35 @@ const Dashboard = () => {
     setIsSorting(false);
   };
 
+  const runSS = async () => {
+    setIsSorting(true);
+    setSorted([]);
+    await selectionSort([...array], setArray, setComparing, speed);
+    await finalCheck();
+    setIsSorting(false);
+  };
+
+  const runIS = async () => {
+    setIsSorting(true);
+    setSorted([]);
+    await insertionSort([...array], setArray, setComparing, speed);
+    await finalCheck();
+    setIsSorting(false);
+  };
+
   const run = async () => {
     switch (selectedAlgorithm) {
       case "Bubble sort":
-        console.log("speed" + speed);
         await runBS();
         break;
       case "Quicksort":
         await runQS();
+        break;
+      case "Selection sort":
+        await runSS();
+        break;
+      case "Insertion sort":
+        await runIS();
         break;
       default:
         break;
@@ -100,6 +123,8 @@ const Dashboard = () => {
             <select className="select select-sm select-bordered" onChange={(e) => setSelectedAlgorithm(e.target.value)}>
               <option selected>Bubble sort</option>
               <option>Quicksort</option>
+              <option>Selection sort</option>
+              <option>Insertion sort</option>
             </select>
           </label>
         </div>

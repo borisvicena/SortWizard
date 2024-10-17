@@ -19,7 +19,7 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => 
         {array.map((value, idx) => (
           <div
             key={idx}
-            className={`w-[10px] mx-[1px] transition-all duration-500 ${
+            className={`w-[10px] mx-[1px] transition-all ${
               sorted.includes(idx) ? "bg-success" : comparing.includes(idx) ? "bg-secondary" : "bg-primary"
             } rounded-badge`}
             style={{

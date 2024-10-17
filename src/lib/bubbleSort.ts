@@ -17,15 +17,16 @@ export const bubbleSort = async (
       await delay(speed);
 
       if (arr[j] > arr[j + 1]) {
-        let tmp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = tmp;
+        // Swap elements
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         swapped = true;
 
+        // Update the array state
         setArray([...arr]);
         await delay(speed);
       }
     }
     if (!swapped) break;
   }
+  setComparing(Array.from({ length: len }, (_, idx) => idx));
 };

@@ -14,6 +14,7 @@ export const quickSort = async (
     await quickSort(arr, low, pi - 1, setArray, setComparing, speed);
     await quickSort(arr, pi + 1, high, setArray, setComparing, speed);
   }
+  setComparing(Array.from({ length: arr.length }, (_, idx) => idx));
 };
 
 /*
