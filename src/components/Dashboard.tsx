@@ -8,6 +8,7 @@ import { quickSort } from "@/lib/quickSort";
 import { selectionSort } from "@/lib/selectionSort";
 import { insertionSort } from "@/lib/insertionSort";
 import { mergeSort } from "@/lib/mergeSort";
+import { bogoSort } from "@/lib/bogoSort";
 
 const Dashboard = () => {
   const [array, setArray] = useState<number[]>([]);
@@ -79,6 +80,14 @@ const Dashboard = () => {
     setIsSorting(false);
   };
 
+  const runBGS = async () => {
+    setIsSorting(true);
+    setSorted([]);
+    await bogoSort([...array], setArray, speed);
+    await finalCheck();
+    setIsSorting(false);
+  };
+
   const run = async () => {
     switch (selectedAlgorithm) {
       case "Bubble sort":
@@ -95,6 +104,9 @@ const Dashboard = () => {
         break;
       case "Merge sort":
         await runMS();
+        break;
+      case "Bogosort":
+        await runBGS();
         break;
       default:
         break;
@@ -138,6 +150,7 @@ const Dashboard = () => {
               <option>Selection sort</option>
               <option>Insertion sort</option>
               <option>Merge sort</option>
+              <option>Bogosort</option>
             </select>
           </label>
         </div>
