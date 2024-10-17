@@ -13,14 +13,16 @@ const Dashboard = () => {
   const [sorted, setSorted] = useState<number[]>([]);
   const [isSorted, setIsSorted] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string | null>(null);
+  const [arraySize, setArraySize] = useState(50);
+  const [maxValue, setMaxValue] = useState(200);
 
   useEffect(() => {
     resetArray();
-  }, []);
+  }, [arraySize, maxValue]);
 
   const resetArray = () => {
     setIsSorted(false);
-    setArray(generateRandomArray(50, 5, 200));
+    setArray(generateRandomArray(arraySize, 1, maxValue));
     setComparing([-1, -1]);
     setSorted([]);
   };
@@ -44,7 +46,7 @@ const Dashboard = () => {
   const runBS = async () => {
     setIsSorting(true);
     setSorted([]);
-    await bubbleSort([...array], setArray, setComparing, 5);
+    await bubbleSort([...array], setArray, setComparing, 1);
     await finalCheck();
     setIsSorting(false);
   };
@@ -77,6 +79,32 @@ const Dashboard = () => {
               </option>
               <option>Bubble sort</option>
               <option>Quicksort</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label className="form-control w-full max-w-xs">
+            <select className="select select-sm select-bordered" onChange={(e) => setArraySize(Number(e.target.value))}>
+              <option disabled selected>
+                Array size
+              </option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+              <option>500</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label className="form-control w-full max-w-xs">
+            <select className="select select-sm select-bordered" onChange={(e) => setMaxValue(Number(e.target.value))}>
+              <option disabled selected>
+                Max Value
+              </option>
+              <option>100</option>
+              <option>200</option>
+              <option>300</option>
+              <option>500</option>
             </select>
           </label>
         </div>

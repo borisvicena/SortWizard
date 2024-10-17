@@ -10,9 +10,9 @@ interface ChartProps {
 
 const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => {
   return (
-    <div className="w-full my-4">
+    <div className="w-full max-w-full mt-12">
       <div
-        className={`flex items-end justify-center h-64 bg-base-300 rounded-box p-4 border ${
+        className={`flex items-end justify-center h-auto bg-base-300 rounded-box p-4 border ${
           isSorted ? "border-success" : "border-white/[0.1]"
         }`}
       >
