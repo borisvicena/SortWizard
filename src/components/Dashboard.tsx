@@ -5,6 +5,7 @@ import Chart from "./Chart";
 import { delay, generateRandomArray } from "@/lib/utils";
 import { bubbleSort } from "@/lib/bubbleSort";
 import { quickSort } from "@/lib/quickSort";
+import internal from "stream";
 
 const Dashboard = () => {
   const [array, setArray] = useState<number[]>([]);
@@ -15,6 +16,7 @@ const Dashboard = () => {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string | null>(null);
   const [arraySize, setArraySize] = useState(50);
   const [maxValue, setMaxValue] = useState(200);
+  const [speed, setSpeed] = useState(50);
 
   useEffect(() => {
     resetArray();
@@ -38,7 +40,7 @@ const Dashboard = () => {
   const runQS = async () => {
     setIsSorting(true);
     setSorted([]);
-    await quickSort([...array], 0, array.length - 1, setArray, setComparing, 5);
+    await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed);
     await finalCheck();
     setIsSorting(false);
   };
@@ -46,7 +48,7 @@ const Dashboard = () => {
   const runBS = async () => {
     setIsSorting(true);
     setSorted([]);
-    await bubbleSort([...array], setArray, setComparing, 1);
+    await bubbleSort([...array], setArray, setComparing, speed);
     await finalCheck();
     setIsSorting(false);
   };
@@ -54,6 +56,7 @@ const Dashboard = () => {
   const run = async () => {
     switch (selectedAlgorithm) {
       case "Bubble sort":
+        console.log("speed" + speed);
         await runBS();
         break;
       case "Quicksort":
@@ -61,6 +64,23 @@ const Dashboard = () => {
         break;
       default:
         break;
+    }
+  };
+
+  const convertSpeed = (speedStyle: string): number => {
+    switch (speedStyle) {
+      case "Super-Slow":
+        return 500;
+      case "Slow":
+        return 100;
+      case "Normal":
+        return 50;
+      case "Fast":
+        return 10;
+      case "Super-Fast":
+        return 0;
+      default:
+        return 50;
     }
   };
 
@@ -105,6 +125,23 @@ const Dashboard = () => {
               <option>200</option>
               <option>300</option>
               <option>500</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label className="form-control w-full max-w-xs">
+            <select
+              className="select select-sm select-bordered"
+              onChange={(e) => setSpeed(Number(convertSpeed(e.target.value)))}
+            >
+              <option disabled selected>
+                Speed
+              </option>
+              <option>Super-Slow</option>
+              <option>Slow</option>
+              <option>Normal</option>
+              <option>Fast</option>
+              <option>Super-Fast</option>
             </select>
           </label>
         </div>
