@@ -35,7 +35,7 @@ const Dashboard = () => {
   const finalCheck = async () => {
     for (let i = 0; i < array.length; i++) {
       setSorted((prev) => [...prev, i]);
-      await delay(10);
+      await delay(5);
     }
     setIsSorted(true);
   };
