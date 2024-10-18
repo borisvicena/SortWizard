@@ -2,4 +2,4 @@
 
 Visualizer for different sorting algorithms.
 
-![SortWizard](./public/SortWizard.jpeg)
+![SortWizard](./public/SortMagic.jpeg)
