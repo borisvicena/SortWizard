@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SortWizard",
+  title: "SortMagic",
   description: "Sorting visualizer",
 };
 
