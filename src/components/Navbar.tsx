@@ -19,7 +19,7 @@ const Navbar = () => {
         </div>
         <div className="flex flex-grow justify-center">
           <div className="tooltip tooltip-bottom" data-tip="Let’s Sort Things Out 🔮">
-            <button className="btn btn-primary text-base">Sort Wizard</button>
+            <button className="btn btn-primary text-base">Sort Magic</button>
           </div>
         </div>
         <div className="tooltip tooltip-bottom" data-tip="Github Repository">
