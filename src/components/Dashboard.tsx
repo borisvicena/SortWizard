@@ -29,6 +29,7 @@ const Dashboard = () => {
   const [speed, setSpeed] = useState(50);
   const [sortingDuration, setSortingDuration] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [swapCount, setSwapCount] = useState(0);
 
   useEffect(() => {
     resetArray();
@@ -94,7 +95,7 @@ const Dashboard = () => {
 
   const runBS = async () => {
     setSorted([]);
-    await bubbleSort([...array], setArray, setComparing, speed);
+    await bubbleSort([...array], setArray, setComparing, setSwapCount, speed);
     await finalCheck();
   };
 
@@ -125,6 +126,7 @@ const Dashboard = () => {
   const run = async () => {
     setIsSorting(true);
     setElapsedTime(0);
+    setSwapCount(0);
     const startTime = performance.now();
 
     const timerInterval = setInterval(() => {
@@ -297,17 +299,43 @@ const Dashboard = () => {
           </div>
           <div className="grid grid-cols-1 gap-4 mt-4">
             <button onClick={run} disabled={isSorting} className="btn btn-sm btn-primary">
-              {isSorting ? <span className="loading loading-infinity loading-lg"></span> : <span>Run</span>}
+              {isSorting ? (
+                <span className="loading loading-infinity loading-lg"></span>
+              ) : (
+                <span className="leading-3">Run</span>
+              )}
             </button>
           </div>
         </div>
         <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1]">
-          <div className="text-base font-bold">Info</div>
-          <div className="grid grid-cols-1 gap-4 mt-4">
-            <div className="text-base">Duration: {elapsedTime.toFixed(1)}s</div>
+          <div className="text-base font-bold">
+            Info <span className="text-warning text-sm"> (In progress)</span>
           </div>
-          <div className="grid grid-cols-3 gap-4 mt-4"></div>
-          <div className="grid grid-cols-1 gap-4 mt-4"></div>
+          <div className="grid grid-cols-1 gap-4 mt-4">
+            <div className="text-base leading-3">
+              Algorithm: <span className="font-bold">{selectedAlgorithm}</span>
+            </div>
+            <div className="text-base leading-3">
+              Duration: <span className="font-bold">{elapsedTime.toFixed(1)}s</span>
+              <span className="text-error text-sm leading-3"> (not working)</span>
+            </div>
+            <div className="text-base leading-3">
+              Comparisons: <span className="font-bold">0</span>
+              <span className="text-error text-sm leading-3"> (not working)</span>
+            </div>
+            <div className="text-base leading-3">
+              Swaps:
+              <span className="font-bold"> {swapCount || 0}</span>
+              <span className="text-error text-sm leading-3"> (not working)</span>
+            </div>
+            <div className="text-base leading-3">
+              Sorted:{" "}
+              <span className="font-bold">
+                {swapCount}/{array.length}
+              </span>
+              <span className="text-error text-sm leading-3"> (not working)</span>
+            </div>
+          </div>
         </div>
       </div>
       <Chart array={array} sorted={sorted} isSorted={isSorted} comparing={comparing} />

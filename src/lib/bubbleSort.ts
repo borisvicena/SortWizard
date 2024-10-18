@@ -5,6 +5,7 @@ export const bubbleSort = async (
   arr: number[],
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
+  setSwapCount: React.Dispatch<React.SetStateAction<number>>,
   speed: number
 ) => {
   let len = arr.length;
@@ -20,7 +21,7 @@ export const bubbleSort = async (
         // Swap elements
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         swapped = true;
-
+        setSwapCount((prev) => prev + 1);
         // Update the array state
         setArray([...arr]);
         await delay(speed);
