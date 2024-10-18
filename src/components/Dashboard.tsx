@@ -124,6 +124,7 @@ const Dashboard = () => {
   };
 
   const run = async () => {
+    setIsSorted(false);
     setIsSorting(true);
     setElapsedTime(0);
     setSwapCount(0);
@@ -160,6 +161,7 @@ const Dashboard = () => {
     clearInterval(timerInterval);
     const endTime = performance.now();
     setSortingDuration((endTime - startTime) / 1000);
+    setIsSorted(true);
     setIsSorting(false);
   };
 
@@ -313,24 +315,33 @@ const Dashboard = () => {
           </div>
           <div className="grid grid-cols-1 gap-4 mt-4">
             <div className="text-base leading-3">
-              Algorithm: <span className="font-bold">{selectedAlgorithm}</span>
+              Algorithm:{" "}
+              <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
+                {selectedAlgorithm}
+              </span>
             </div>
             <div className="text-base leading-3">
-              Duration: <span className="font-bold">{elapsedTime.toFixed(1)}s</span>
+              Duration:{" "}
+              <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
+                {elapsedTime.toFixed(1)}s
+              </span>
               <span className="text-error text-sm leading-3"> (not working)</span>
             </div>
             <div className="text-base leading-3">
-              Comparisons: <span className="font-bold">0</span>
+              Comparisons: <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>0</span>
               <span className="text-error text-sm leading-3"> (not working)</span>
             </div>
             <div className="text-base leading-3">
               Swaps:
-              <span className="font-bold"> {swapCount || 0}</span>
+              <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
+                {" "}
+                {swapCount || 0}
+              </span>
               <span className="text-error text-sm leading-3"> (not working)</span>
             </div>
             <div className="text-base leading-3">
               Sorted:{" "}
-              <span className="font-bold">
+              <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
                 {swapCount}/{array.length}
               </span>
               <span className="text-error text-sm leading-3"> (not working)</span>
