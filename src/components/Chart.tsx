@@ -46,7 +46,7 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => 
       {tooltip && (
         <div
           className="absolute bg-neutral text-neutral-content border border-white/[0.1] rounded-md p-2"
-          style={{ top: tooltip.top - 180, left: tooltip.left - 110 }}
+          style={{ top: tooltip.top - 180, left: tooltip.left - 100 }}
         >
           {tooltip.value}
         </div>
