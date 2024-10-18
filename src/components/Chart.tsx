@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 interface ChartProps {
   array: number[];
@@ -10,6 +10,16 @@ interface ChartProps {
 
 const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => {
   const maxHeight = Math.max(...array) || 0;
+  const [tooltip, setTooltip] = useState<{ value: number; top: number; left: number } | null>(null);
+
+  const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>, value: number) => {
+    const { clientX, clientY } = event;
+    setTooltip({ value, top: clientY, left: clientX });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip(null);
+  };
 
   return (
     <div className="w-full max-w-full mt-4">
@@ -28,9 +38,19 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => 
             style={{
               height: `${value}px`,
             }}
+            onMouseEnter={(e) => handleMouseEnter(e, value)}
+            onMouseLeave={handleMouseLeave}
           ></div>
         ))}
       </div>
+      {tooltip && (
+        <div
+          className="absolute bg-neutral text-neutral-content border border-white/[0.1] rounded-md p-2"
+          style={{ top: tooltip.top - 180, left: tooltip.left - 110 }}
+        >
+          {tooltip.value}
+        </div>
+      )}
     </div>
   );
 };
