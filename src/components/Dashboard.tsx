@@ -30,6 +30,8 @@ const Dashboard = () => {
   const [sortingDuration, setSortingDuration] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
+  const [isDelay, setIsDelay] = useState(true);
+  const [numOfSorted, setNumOfSorted] = useState(0);
 
   useEffect(() => {
     resetArray();
@@ -83,49 +85,12 @@ const Dashboard = () => {
       setSorted((prev) => [...prev, i]);
       await delay(5);
     }
-    setIsSorted(true);
-  };
-
-  const runQS = async () => {
-    setSorted([]);
-    await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed);
-    await finalCheck();
-    setIsSorting(false);
-  };
-
-  const runBS = async () => {
-    setSorted([]);
-    await bubbleSort([...array], setArray, setComparing, setSwapCount, speed);
-    await finalCheck();
-  };
-
-  const runSS = async () => {
-    setSorted([]);
-    await selectionSort([...array], setArray, setComparing, speed);
-    await finalCheck();
-  };
-
-  const runIS = async () => {
-    setSorted([]);
-    await insertionSort([...array], setArray, setComparing, speed);
-    await finalCheck();
-  };
-
-  const runMS = async () => {
-    setSorted([]);
-    await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed);
-    await finalCheck();
-  };
-
-  const runBGS = async () => {
-    setSorted([]);
-    await bogoSort([...array], setArray, speed);
-    await finalCheck();
   };
 
   const run = async () => {
     setIsSorted(false);
     setIsSorting(true);
+    setSorted([]);
     setElapsedTime(0);
     setSwapCount(0);
     const startTime = performance.now();
@@ -137,26 +102,28 @@ const Dashboard = () => {
 
     switch (selectedAlgorithm) {
       case "Bubble sort":
-        await runBS();
+        await bubbleSort([...array], setArray, setComparing, setSwapCount, speed, isDelay, setNumOfSorted);
         break;
       case "Quicksort":
-        await runQS();
+        await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed);
         break;
       case "Selection sort":
-        await runSS();
+        await selectionSort([...array], setArray, setComparing, speed);
         break;
       case "Insertion sort":
-        await runIS();
+        await insertionSort([...array], setArray, setComparing, speed);
         break;
       case "Merge sort":
-        await runMS();
+        await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed);
         break;
       case "Bogosort":
-        await runBGS();
+        await bogoSort([...array], setArray, speed);
         break;
       default:
         break;
     }
+
+    await finalCheck();
 
     clearInterval(timerInterval);
     const endTime = performance.now();
@@ -164,25 +131,6 @@ const Dashboard = () => {
     setIsSorted(true);
     setIsSorting(false);
   };
-
-  const convertSpeed = (speedStyle: string): number => {
-    switch (speedStyle) {
-      case "Super-Slow":
-        return 500;
-      case "Slow":
-        return 100;
-      case "Normal":
-        return 50;
-      case "Fast":
-        return 10;
-      case "Super-Fast":
-        return 0;
-      default:
-        return 50;
-    }
-  };
-
-  console.log("MAX: " + maxValue);
 
   return (
     <main className="flex flex-col rounded-box mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-8 indicator">
@@ -205,13 +153,14 @@ const Dashboard = () => {
                   <select
                     className="select select-sm select-bordered"
                     onChange={(e) => setSelectedAlgorithm(e.target.value)}
+                    defaultValue={"Bubble sort"}
                   >
-                    <option selected>Bubble sort</option>
-                    <option>Quicksort</option>
-                    <option>Selection sort</option>
-                    <option>Insertion sort</option>
-                    <option>Merge sort</option>
-                    <option>Bogosort</option>
+                    <option value={"Bubble sort"}>Bubble sort</option>
+                    <option value={"Quicksort"}>Quicksort</option>
+                    <option value={"Selection sort"}>Selection sort</option>
+                    <option value={"Insertion sort"}>Insertion sort</option>
+                    <option value={"Merge sort"}>Merge sort</option>
+                    <option value={"Bogosort"}>Bogosort</option>
                   </select>
                 </label>
               </div>
@@ -223,11 +172,12 @@ const Dashboard = () => {
                   <select
                     className="select select-sm select-bordered"
                     onChange={(e) => setArraySize(Number(e.target.value))}
+                    defaultValue={50}
                   >
-                    <option>25</option>
-                    <option selected>50</option>
-                    <option>100</option>
-                    <option>500</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                    <option value={500}>500</option>
                   </select>
                 </label>
               </div>
@@ -241,28 +191,34 @@ const Dashboard = () => {
                   <select
                     className="select select-sm select-bordered"
                     onChange={(e) => setMaxValue(Number(e.target.value))}
+                    defaultValue={200}
                   >
-                    <option>100</option>
-                    <option selected>200</option>
-                    <option>300</option>
-                    <option>500</option>
+                    <option value={100}>100</option>
+                    <option value={200}>200</option>
+                    <option value={300}>300</option>
+                    <option value={500}>500</option>
                   </select>
                 </label>
               </div>
               <div>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
-                    <span className="label-text">Speed</span>
+                    <span className="label-text">Delay</span>
                   </div>
                   <select
                     className="select select-sm select-bordered"
-                    onChange={(e) => setSpeed(Number(convertSpeed(e.target.value)))}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      setSpeed(value);
+                      setIsDelay(value !== 0);
+                    }}
+                    defaultValue={50}
                   >
-                    <option>Super-Slow</option>
-                    <option>Slow</option>
-                    <option selected>Normal</option>
-                    <option>Fast</option>
-                    <option>Super-Fast</option>
+                    <option value={0}>0</option>
+                    <option value={10}>10</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                    <option value={100}>250</option>
                   </select>
                 </label>
               </div>
@@ -357,7 +313,7 @@ const Dashboard = () => {
               <div className="text-base leading-3">
                 Sorted:{" "}
                 <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
-                  {swapCount}/{array.length}
+                  {numOfSorted}/{array.length}
                 </span>
               </div>
             </div>
