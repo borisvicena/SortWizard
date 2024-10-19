@@ -7,12 +7,13 @@ export const quickSort = async (
   high: number,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number
+  speed: number,
+  isDelay: boolean
 ) => {
   if (low < high) {
-    let pi = await partition(arr, low, high, setComparing, setArray, speed);
-    await quickSort(arr, low, pi - 1, setArray, setComparing, speed);
-    await quickSort(arr, pi + 1, high, setArray, setComparing, speed);
+    let pi = await partition(arr, low, high, setComparing, setArray, speed, isDelay);
+    await quickSort(arr, low, pi - 1, setArray, setComparing, speed, isDelay);
+    await quickSort(arr, pi + 1, high, setArray, setComparing, speed, isDelay);
   }
   setComparing(Array.from({ length: arr.length }, (_, idx) => idx));
 };
@@ -27,21 +28,22 @@ const partition = async (
   high: number,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number
+  speed: number,
+  isDelay: boolean
 ) => {
   const pivot = arr[high];
   let i = low - 1;
 
   for (let j = low; j <= high - 1; j++) {
     setComparing([j, high]);
-    await delay(speed);
+    if (isDelay) await delay(speed);
     if (arr[j] < pivot) {
       i++;
-      await swap(arr, i, j, setArray, speed);
+      await swap(arr, i, j, setArray, speed, isDelay);
     }
   }
 
-  await swap(arr, i + 1, high, setArray, speed);
+  await swap(arr, i + 1, high, setArray, speed, isDelay);
   return i + 1;
 };
 
@@ -54,11 +56,12 @@ const swap = async (
   i: number,
   j: number,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number
+  speed: number,
+  isDelay: boolean
 ) => {
   let tmp = arr[i];
   arr[i] = arr[j];
   arr[j] = tmp;
   setArray([...arr]);
-  await delay(speed);
+  if (isDelay) await delay(speed);
 };

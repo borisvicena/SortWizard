@@ -105,7 +105,7 @@ const Dashboard = () => {
         await bubbleSort([...array], setArray, setComparing, setSwapCount, speed, isDelay, setNumOfSorted);
         break;
       case "Quicksort":
-        await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed);
+        await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed, isDelay);
         break;
       case "Selection sort":
         await selectionSort([...array], setArray, setComparing, speed);
@@ -214,7 +214,7 @@ const Dashboard = () => {
                     }}
                     defaultValue={50}
                   >
-                    <option value={0}>0</option>
+                    <option value={0}>No delay</option>
                     <option value={10}>10</option>
                     <option value={50}>50</option>
                     <option value={100}>100</option>
