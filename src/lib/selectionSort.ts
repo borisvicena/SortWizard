@@ -4,7 +4,8 @@ export const selectionSort = async (
   arr: number[],
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number
+  speed: number,
+  isDelay: boolean
 ) => {
   let len = arr.length;
 
@@ -12,22 +13,22 @@ export const selectionSort = async (
     let min = i;
 
     setComparing([i, min]);
-    await delay(speed);
+    if (isDelay) await delay(speed);
 
     for (let j = i + 1; j < len; j++) {
       setComparing([min, j]);
-      await delay(speed);
+      if (isDelay) await delay(speed);
       if (arr[j] < arr[min]) {
         min = j;
         setComparing([min, -1]);
-        await delay(speed);
+        if (isDelay) await delay(speed);
       }
     }
 
     if (min !== i) {
       [arr[i], arr[min]] = [arr[min], arr[i]];
       setArray([...arr]);
-      await delay(speed);
+      if (isDelay) await delay(speed);
     }
   }
   setComparing(Array.from({ length: len }, (_, idx) => idx));

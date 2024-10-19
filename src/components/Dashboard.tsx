@@ -100,6 +100,7 @@ const Dashboard = () => {
       setElapsedTime((currentTime - startTime) / 1000);
     }, 100);
 
+    // TODO: isDelay needs to be checked
     switch (selectedAlgorithm) {
       case "Bubble sort":
         await bubbleSort([...array], setArray, setComparing, setSwapCount, speed, isDelay, setNumOfSorted);
@@ -108,13 +109,13 @@ const Dashboard = () => {
         await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed, isDelay);
         break;
       case "Selection sort":
-        await selectionSort([...array], setArray, setComparing, speed);
+        await selectionSort([...array], setArray, setComparing, speed, isDelay);
         break;
       case "Insertion sort":
-        await insertionSort([...array], setArray, setComparing, speed);
+        await insertionSort([...array], setArray, setComparing, speed, isDelay);
         break;
       case "Merge sort":
-        await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed);
+        await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed, isDelay);
         break;
       case "Bogosort":
         await bogoSort([...array], setArray, speed);
@@ -122,12 +123,12 @@ const Dashboard = () => {
       default:
         break;
     }
-
     await finalCheck();
 
     clearInterval(timerInterval);
     const endTime = performance.now();
     setSortingDuration((endTime - startTime) / 1000);
+
     setIsSorted(true);
     setIsSorting(false);
   };
