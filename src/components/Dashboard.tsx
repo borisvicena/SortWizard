@@ -37,12 +37,6 @@ const Dashboard = () => {
     generate("Random");
   }, [arraySize, maxValue]);
 
-  const resetToOriginalArray = () => {
-    setArray(originalArray);
-    setComparing([-1, -1]);
-    setSorted([]);
-  };
-
   const generate = (array: string): void => {
     setIsSorted(false);
     let newArray = [];
@@ -67,6 +61,9 @@ const Dashboard = () => {
         newArray = generateUniqueArray(arraySize, maxValue);
         setArray(newArray);
         setOriginalArray(newArray);
+        break;
+      case "Reset":
+        setArray(originalArray);
         break;
       default:
         newArray = generateRandomArray(arraySize, 1, maxValue);
@@ -257,7 +254,7 @@ const Dashboard = () => {
               >
                 Pause
               </button>
-              <button onClick={resetToOriginalArray} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button onClick={() => generate("Reset")} disabled={isSorting} className="btn btn-sm btn-primary">
                 Reset
               </button>
               <button
