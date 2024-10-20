@@ -34,48 +34,46 @@ const Dashboard = () => {
   const [numOfSorted, setNumOfSorted] = useState(0);
 
   useEffect(() => {
-    resetArray();
+    generate("Random");
   }, [arraySize, maxValue]);
 
-  const resetArray = () => {
-    setIsSorted(false);
-    const newArray = generateRandomArray(arraySize, 1, maxValue);
-    setArray(newArray);
-    setOriginalArray(newArray);
-    setComparing([-1, -1]);
-    setSorted([]);
-  };
-
-  const almostSortedArray = () => {
-    setIsSorted(false);
-    const newArray = generateAlmostSortedArray(arraySize, 1, maxValue);
-    setArray(newArray);
-    setOriginalArray(newArray);
-    setComparing([-1, -1]);
-    setSorted([]);
-  };
-
-  const sortedArray = () => {
-    setIsSorted(false);
-    const newArray = generateSortedArray(arraySize, 1, maxValue);
-    setArray(newArray);
-    setOriginalArray(newArray);
-    setComparing([-1, -1]);
-    setSorted([]);
-  };
-
-  const uniqueArray = () => {
-    setIsSorted(false);
-    const newArray = generateUniqueArray(arraySize, maxValue);
-    setArray(newArray);
-    setOriginalArray(newArray);
-    setComparing([-1, -1]);
-    setSorted([]);
-  };
-
   const resetToOriginalArray = () => {
-    setIsSorted(false);
     setArray(originalArray);
+    setComparing([-1, -1]);
+    setSorted([]);
+  };
+
+  const generate = (array: string): void => {
+    setIsSorted(false);
+    let newArray = [];
+
+    switch (array) {
+      case "Random":
+        newArray = generateRandomArray(arraySize, 1, maxValue);
+        setArray(newArray);
+        setOriginalArray(newArray);
+        break;
+      case "Sorted":
+        newArray = generateSortedArray(arraySize, 1, maxValue);
+        setArray(newArray);
+        setOriginalArray(newArray);
+        break;
+      case "Almost sorted":
+        newArray = generateAlmostSortedArray(arraySize, 1, maxValue);
+        setArray(newArray);
+        setOriginalArray(newArray);
+        break;
+      case "Unique":
+        newArray = generateUniqueArray(arraySize, maxValue);
+        setArray(newArray);
+        setOriginalArray(newArray);
+        break;
+      default:
+        newArray = generateRandomArray(arraySize, 1, maxValue);
+        setArray(newArray);
+        setOriginalArray(newArray);
+        break;
+    }
     setComparing([-1, -1]);
     setSorted([]);
   };
@@ -178,6 +176,7 @@ const Dashboard = () => {
                     <option value={25}>25</option>
                     <option value={50}>50</option>
                     <option value={100}>100</option>
+                    <option value={250}>250</option>
                     <option value={500}>500</option>
                   </select>
                 </label>
@@ -219,7 +218,7 @@ const Dashboard = () => {
                     <option value={10}>10</option>
                     <option value={50}>50</option>
                     <option value={100}>100</option>
-                    <option value={100}>250</option>
+                    <option value={250}>250</option>
                   </select>
                 </label>
               </div>
@@ -236,17 +235,17 @@ const Dashboard = () => {
           <div className="w-full">
             <div className="text-base font-bold">Control</div>
             <div className="grid grid-cols-4 gap-4 mt-4">
-              <button onClick={resetArray} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button onClick={() => generate("Random")} disabled={isSorting} className="btn btn-sm btn-primary">
                 Random
               </button>
 
-              <button onClick={sortedArray} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button onClick={() => generate("Sorted")} disabled={isSorting} className="btn btn-sm btn-primary">
                 Sorted
               </button>
-              <button onClick={almostSortedArray} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button onClick={() => generate("Almost sorted")} disabled={isSorting} className="btn btn-sm btn-primary">
                 Almost sorted
               </button>
-              <button onClick={uniqueArray} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button onClick={() => generate("Unique")} disabled={isSorting} className="btn btn-sm btn-primary">
                 Unique
               </button>
             </div>
