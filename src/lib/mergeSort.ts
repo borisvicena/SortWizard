@@ -7,14 +7,13 @@ export const mergeSort = async (
   right: number,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number,
-  isDelay: boolean
+  speed: number
 ) => {
   if (left < right) {
     const mid = Math.floor(left + (right - left) / 2);
-    await mergeSort(arr, left, mid, setArray, setComparing, speed, isDelay);
-    await mergeSort(arr, mid + 1, right, setArray, setComparing, speed, isDelay);
-    await merge(arr, left, mid, right, setArray, setComparing, speed, isDelay);
+    await mergeSort(arr, left, mid, setArray, setComparing, speed);
+    await mergeSort(arr, mid + 1, right, setArray, setComparing, speed);
+    await merge(arr, left, mid, right, setArray, setComparing, speed);
   }
   setComparing(Array.from({ length: arr.length }, (_, idx) => idx));
 };
@@ -26,8 +25,7 @@ const merge = async (
   right: number,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number,
-  isDelay: boolean
+  speed: number
 ) => {
   const n1 = mid - left + 1;
   const n2 = right - mid;
@@ -48,7 +46,7 @@ const merge = async (
 
   while (i < n1 && j < n2) {
     setComparing([left + i, mid + 1 + j]);
-    if (isDelay) await delay(speed);
+    await delay(speed);
     if (L[i] <= R[j]) {
       arr[k] = L[i];
       i++;

@@ -29,8 +29,8 @@ const Dashboard = () => {
   const [speed, setSpeed] = useState(50);
   const [sortingDuration, setSortingDuration] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [comparedCount, setComparedCount] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
-  const [isDelay, setIsDelay] = useState(true);
   const [numOfSorted, setNumOfSorted] = useState(0);
 
   useEffect(() => {
@@ -98,19 +98,19 @@ const Dashboard = () => {
     // TODO: isDelay needs to be checked
     switch (selectedAlgorithm) {
       case "Bubble sort":
-        await bubbleSort([...array], setArray, setComparing, setSwapCount, speed, isDelay, setNumOfSorted);
+        await bubbleSort([...array], setArray, setComparing, setSwapCount, speed, setNumOfSorted, setComparedCount);
         break;
       case "Quicksort":
-        await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed, isDelay);
+        await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed);
         break;
       case "Selection sort":
-        await selectionSort([...array], setArray, setComparing, speed, isDelay);
+        await selectionSort([...array], setArray, setComparing, speed);
         break;
       case "Insertion sort":
-        await insertionSort([...array], setArray, setComparing, speed, isDelay);
+        await insertionSort([...array], setArray, setComparing, speed);
         break;
       case "Merge sort":
-        await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed, isDelay);
+        await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed);
         break;
       case "Bogosort":
         await bogoSort([...array], setArray, speed);
@@ -135,9 +135,7 @@ const Dashboard = () => {
       <div className="mt-4 flex justify-start space-x-4">
         {/* SETTINGS SECTION START */}
         <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1] indicator">
-          <span className="indicator-item indicator-center badge badge-info text-info-content">
-            new algorithms coming soon
-          </span>
+          <span className="indicator-item indicator-center badge badge-info text-info-content">more coming soon</span>
           <div className="w-full">
             <div className="text-base font-bold">Settings</div>
             <div className="grid grid-cols-2 gap-4 mt-2">
@@ -207,15 +205,15 @@ const Dashboard = () => {
                     onChange={(e) => {
                       const value = Number(e.target.value);
                       setSpeed(value);
-                      setIsDelay(value !== 0);
                     }}
                     defaultValue={50}
                   >
-                    <option value={0}>No delay</option>
+                    <option value={0}>0</option>
                     <option value={10}>10</option>
                     <option value={50}>50</option>
                     <option value={100}>100</option>
                     <option value={250}>250</option>
+                    <option value={500}>500</option>
                   </select>
                 </label>
               </div>
@@ -225,10 +223,7 @@ const Dashboard = () => {
         {/* SETTINGS SECTION END */}
 
         {/* CONTROL SECTION START */}
-        <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1] indicator">
-          <span className="indicator-item indicator-center badge badge-warning text-warning-content">
-            mostly working
-          </span>
+        <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1]">
           <div className="w-full">
             <div className="text-base font-bold">Control</div>
             <div className="grid grid-cols-4 gap-4 mt-4">
@@ -298,7 +293,10 @@ const Dashboard = () => {
               </div>
               <div className="text-base leading-3">
                 Comparisons:{" "}
-                <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>0</span>
+                <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
+                  {" "}
+                  {comparedCount || 0}
+                </span>
               </div>
               <div className="text-base leading-3">
                 Swaps:

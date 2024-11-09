@@ -7,36 +7,45 @@ export const bubbleSort = async (
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
   setSwapCount: React.Dispatch<React.SetStateAction<number>>,
   speed: number,
-  isDelay: boolean,
-  setNumOfSorted: React.Dispatch<React.SetStateAction<number>>
+  setNumOfSorted: React.Dispatch<React.SetStateAction<number>>,
+  setComparedCount: React.Dispatch<React.SetStateAction<number>>
 ) => {
-  let len = arr.length;
-  let swapped;
-  let sortedCount = 0;
+  const len = arr.length;
+  let swapped: boolean;
+  let lastUnsorted = len - 1;
+
+  // Reset states at the start
+  setSwapCount(0);
+  setComparedCount(0);
+  setNumOfSorted(0);
 
   for (let i = 0; i < len; i++) {
     swapped = false;
-    for (let j = 0; j < len - i - 1; j++) {
+    // Only iterate up to the last unsorted element
+    for (let j = 0; j < lastUnsorted; j++) {
       setComparing([j, j + 1]);
-      if (isDelay) await delay(speed);
+      await delay(speed);
 
       if (arr[j] > arr[j + 1]) {
         // Swap elements
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         swapped = true;
         setSwapCount((prev) => prev + 1);
-        // Update the array state
         setArray([...arr]);
-        if (isDelay) await delay(speed);
+        await delay(speed);
       }
+      setComparedCount((prev) => prev + 1);
     }
-    sortedCount += 1;
-    setNumOfSorted(sortedCount);
+
+    // After each pass, the last element is guaranteed to be in place
+    lastUnsorted--;
+    setNumOfSorted(len - lastUnsorted - 1);
+
     if (!swapped) {
       // If no swaps occurred, array is sorted
       setNumOfSorted(len);
+      setComparing([]); // Clear comparison indicators
       break;
     }
   }
-  setComparing(Array.from({ length: len }, (_, idx) => idx));
 };
