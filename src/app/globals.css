@@ -5,3 +5,22 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes falling {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.falling-heart {
+  position: fixed; /* Ensure this is set */
+  animation: falling 5s linear forwards;
+  z-index: 50;
+  pointer-events: none; /* Prevent hearts from interfering with clicks */
+  font-size: 24px; /* Make hearts visible */
+}

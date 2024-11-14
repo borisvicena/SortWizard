@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface ChartProps {
   array: number[];
@@ -11,11 +11,15 @@ interface ChartProps {
 }
 
 const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapping, height }) => {
+  const [isClient, setIsClient] = useState(false);
   const BAR_WIDTH = 10;
   const BAR_MARGIN = 1;
   const HEIGHT_PADDING = 50;
 
-  // Helper function to determine bar color
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const getBarColor = (index: number): string => {
     if (sorted.includes(index)) return "bg-success";
     if (swapping.includes(index)) return "bg-info-content";
@@ -26,22 +30,35 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapp
     return "bg-primary";
   };
 
+  // Show loading state before client-side hydration
+  if (!isClient) {
+    return (
+      <div className="w-full max-w-full mt-4">
+        <div
+          className="flex items-center justify-center bg-base-300 rounded-box p-4 border border-white/[0.1]"
+          style={{ height: `${height + HEIGHT_PADDING}px` }}
+        >
+          <div className="loading loading-infinity loading-lg"></div>
+        </div>
+      </div>
+    );
+  }
+
   // Show skeleton if array is empty
   if (array.length === 0) {
     return (
       <div className="w-full max-w-full mt-4">
         <div
           className="flex items-end justify-center bg-base-300 rounded-box p-4 border border-white/[0.1]"
-          style={{ height: `${200 + HEIGHT_PADDING}px` }}
+          style={{ height: `${height + HEIGHT_PADDING}px` }}
         >
           {[...Array(50)].map((_, idx) => (
             <div
               key={idx}
-              className="animate-pulse mx-[1px] rounded-badge"
+              className="animate-pulse mx-[1px] rounded-badge bg-white/10"
               style={{
                 width: `${BAR_WIDTH}px`,
-                height: `${Math.random() * 150 + 50}px`,
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                height: `${50 + (idx % 5) * 30}px`, // Deterministic height based on index
               }}
             />
           ))}
@@ -61,14 +78,15 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapp
         {array.map((value, idx) => (
           <div
             key={idx}
-            className={`w-[${BAR_WIDTH}px] mx-[${BAR_MARGIN}px] ${getBarColor(
-              idx
-            )} rounded-badge transition-all duration-200`}
             style={{
-              height: `${value}px`,
+              width: `${BAR_WIDTH}px`,
+              marginLeft: `${BAR_MARGIN}px`,
+              marginRight: `${BAR_MARGIN}px`,
+              height: `${Math.floor(value)}px`,
             }}
+            className={`${getBarColor(idx)} rounded-badge transition-all duration-200`}
             aria-label={`Bar value: ${value}`}
-          ></div>
+          />
         ))}
       </div>
     </div>
