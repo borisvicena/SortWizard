@@ -212,16 +212,18 @@ const Dashboard = () => {
   };
 
   return (
-    <main className="flex flex-col rounded-box mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-8 indicator">
+    <main className="flex flex-col rounded-box mt-4 md:mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-4 md:p-8 indicator">
       <span className="indicator-item badge badge-secondary text-secondary-content">welcome</span>
-      <div className="font-bold text-2xl">Dashboard 🪄</div>
-      <div className="mt-4 flex justify-start space-x-4">
-        {/* SETTINGS SECTION START */}
+      <div className="font-bold text-xl md:text-2xl">Dashboard 🪄</div>
+
+      {/* Make the sections stack on mobile */}
+      <div className="mt-4 flex flex-col lg:flex-row justify-start space-y-4 lg:space-y-0 lg:space-x-4">
+        {/* SETTINGS SECTION */}
         <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1] indicator">
           <span className="indicator-item indicator-center badge badge-info text-info-content">more coming soon</span>
           <div className="w-full">
             <div className="text-base font-bold">Settings</div>
-            <div className="grid grid-cols-2 gap-4 mt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
               <div>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
@@ -304,48 +306,66 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        {/* SETTINGS SECTION END */}
 
-        {/* CONTROL SECTION START */}
+        {/* CONTROL SECTION */}
         <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1]">
           <div className="w-full">
             <div className="text-base font-bold">Control</div>
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              <button onClick={() => generate("Random")} disabled={isSorting} className="btn btn-sm btn-primary">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mt-4">
+              <button
+                onClick={() => generate("Random")}
+                disabled={isSorting}
+                className="btn btn-xs sm:btn-sm btn-primary"
+              >
                 Random
               </button>
-
-              <button onClick={() => generate("Sorted")} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button
+                onClick={() => generate("Sorted")}
+                disabled={isSorting}
+                className="btn btn-xs sm:btn-sm btn-primary"
+              >
                 Sorted
               </button>
-              <button onClick={() => generate("Almost sorted")} disabled={isSorting} className="btn btn-sm btn-primary">
-                Almost sorted
+              <button
+                onClick={() => generate("Almost sorted")}
+                disabled={isSorting}
+                className="btn btn-xs sm:btn-sm btn-primary"
+              >
+                Almost
               </button>
-              <button onClick={() => generate("Unique")} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button
+                onClick={() => generate("Unique")}
+                disabled={isSorting}
+                className="btn btn-xs sm:btn-sm btn-primary"
+              >
                 Unique
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4">
               <button
                 onClick={() => alert("Pause is not working!")}
                 disabled={isSorting}
-                className="btn btn-sm btn-neutral"
+                className="btn btn-xs sm:btn-sm btn-neutral"
               >
                 Pause
               </button>
-              <button onClick={() => generate("Reset")} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button
+                onClick={() => generate("Reset")}
+                disabled={isSorting}
+                className="btn btn-xs sm:btn-sm btn-primary"
+              >
                 Reset
               </button>
               <button
                 onClick={() => alert("Step is not working!")}
                 disabled={isSorting}
-                className="btn btn-sm btn-neutral"
+                className="btn btn-xs sm:btn-sm btn-neutral"
               >
                 Step
               </button>
             </div>
             <div className="grid grid-cols-1 gap-4 mt-4">
-              <button onClick={run} disabled={isSorting} className="btn btn-sm btn-primary">
+              <button onClick={run} disabled={isSorting} className="btn btn-xs sm:btn-sm btn-primary">
                 {isSorting ? (
                   <span className="loading loading-infinity loading-lg h-full"></span>
                 ) : (
@@ -355,41 +375,40 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        {/* CONTROL SECTION END */}
 
-        {/* INFO SECTION START */}
+        {/* INFO SECTION */}
         <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1] indicator">
           <span className="indicator-item indicator-center badge badge-error text-error-content">in progress</span>
           <div className="w-full">
             <div className="text-base font-bold">Info</div>
-            <div className="grid grid-cols-1 gap-4 mt-4">
-              <div className="text-base leading-3">
+            <div className="grid grid-cols-2 sm:grid-cols-1 gap-2 mt-4">
+              <div className="text-sm sm:text-base leading-3">
                 Algorithm:{" "}
                 <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
                   {selectedAlgorithm}
                 </span>
               </div>
-              <div className="text-base leading-3">
+              <div className="text-sm sm:text-base leading-3">
                 Duration:{" "}
                 <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
                   {elapsedTime.toFixed(1)}s
                 </span>
               </div>
-              <div className="text-base leading-3">
+              <div className="text-sm sm:text-base leading-3">
                 Comparisons:{" "}
                 <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
                   {" "}
                   {comparedCount || 0}
                 </span>
               </div>
-              <div className="text-base leading-3">
+              <div className="text-sm sm:text-base leading-1">
                 Swaps:
                 <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
                   {" "}
                   {swapCount || 0}
                 </span>
               </div>
-              <div className="text-base leading-3">
+              <div className="text-sm sm:text-base leading-3">
                 Sorted:{" "}
                 <span className={`font-bold ${isSorted ? "text-success" : "text-neutral-content"}`}>
                   {numOfSorted}/{array.length}
@@ -398,8 +417,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        {/* INFO SECTION END */}
       </div>
+
       <Chart
         array={array}
         sorted={sorted}
