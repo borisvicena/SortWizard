@@ -1,24 +1,29 @@
 "use client";
-import React, { useState } from "react";
+import React from "react"; // Removed unused useState import
 
 interface ChartProps {
   array: number[];
   sorted: number[];
   isSorted: boolean;
   comparing: number[];
+  swapping: number[];
 }
 
-const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => {
+const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapping }) => {
   const maxHeight = Math.max(...array) || 0;
-  const [tooltip, setTooltip] = useState<{ value: number; top: number; left: number } | null>(null);
+  const BAR_WIDTH = 10;
+  const BAR_MARGIN = 1;
+  const HEIGHT_PADDING = 50;
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>, value: number) => {
-    const { clientX, clientY } = event;
-    setTooltip({ value, top: clientY, left: clientX });
-  };
-
-  const handleMouseLeave = () => {
-    setTooltip(null);
+  // Helper function to determine bar color
+  const getBarColor = (index: number): string => {
+    if (sorted.includes(index)) return "bg-success";
+    if (swapping.includes(index)) return "bg-info-content";
+    if (comparing.includes(index)) {
+      if (comparing.length === 1) return "bg-error";
+      return "bg-secondary";
+    }
+    return "bg-primary";
   };
 
   return (
@@ -27,30 +32,21 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing }) => 
         className={`flex items-end justify-center bg-base-300 rounded-box p-4 border ${
           isSorted ? "border-success" : "border-white/[0.1]"
         }`}
-        style={{ height: `${maxHeight + 50}px` }}
+        style={{ height: `${maxHeight + HEIGHT_PADDING}px` }}
       >
         {array.map((value, idx) => (
           <div
             key={idx}
-            className={`w-[10px] mx-[1px] transition-all ${
-              sorted.includes(idx) ? "bg-success" : comparing.includes(idx) ? "bg-secondary" : "bg-primary"
-            } rounded-badge`}
+            className={`w-[${BAR_WIDTH}px] mx-[${BAR_MARGIN}px] ${getBarColor(
+              idx
+            )} rounded-badge transition-all duration-200`}
             style={{
               height: `${value}px`,
             }}
-            onMouseEnter={(e) => handleMouseEnter(e, value)}
-            onMouseLeave={handleMouseLeave}
+            aria-label={`Bar value: ${value}`}
           ></div>
         ))}
       </div>
-      {tooltip && (
-        <div
-          className="absolute bg-neutral text-neutral-content border border-white/[0.1] rounded-md p-2"
-          style={{ top: tooltip.top - 180, left: tooltip.left - 100 }}
-        >
-          {tooltip.value}
-        </div>
-      )}
     </div>
   );
 };

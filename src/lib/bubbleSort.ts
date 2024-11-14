@@ -8,7 +8,9 @@ export const bubbleSort = async (
   setSwapCount: React.Dispatch<React.SetStateAction<number>>,
   speed: number,
   setNumOfSorted: React.Dispatch<React.SetStateAction<number>>,
-  setComparedCount: React.Dispatch<React.SetStateAction<number>>
+  setComparedCount: React.Dispatch<React.SetStateAction<number>>,
+  setSwapping: React.Dispatch<React.SetStateAction<number[]>>,
+  setSorted: React.Dispatch<React.SetStateAction<number[]>>
 ) => {
   const len = arr.length;
   let swapped: boolean;
@@ -27,11 +29,18 @@ export const bubbleSort = async (
       await delay(speed);
 
       if (arr[j] > arr[j + 1]) {
-        // Swap elements
+        // Show swapping animation
+        setSwapping([j, j + 1]);
+        await delay(speed);
+
+        // Perform swap
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         swapped = true;
         setSwapCount((prev) => prev + 1);
         setArray([...arr]);
+
+        // Clear swapping animation
+        setSwapping([]);
         await delay(speed);
       }
       setComparedCount((prev) => prev + 1);
@@ -40,6 +49,7 @@ export const bubbleSort = async (
     // After each pass, the last element is guaranteed to be in place
     lastUnsorted--;
     setNumOfSorted(len - lastUnsorted - 1);
+    setSorted((prev) => [...prev, lastUnsorted + 1]);
 
     if (!swapped) {
       // If no swaps occurred, array is sorted

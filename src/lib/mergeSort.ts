@@ -7,15 +7,64 @@ export const mergeSort = async (
   right: number,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number
+  speed: number,
+  setSwapCount: React.Dispatch<React.SetStateAction<number>>,
+  setNumOfSorted: React.Dispatch<React.SetStateAction<number>>,
+  setComparedCount: React.Dispatch<React.SetStateAction<number>>,
+  setSwapping: React.Dispatch<React.SetStateAction<number[]>>,
+  setSorted: React.Dispatch<React.SetStateAction<number[]>>
 ) => {
+  if (left === 0 && right === arr.length - 1) {
+    setSwapCount(0);
+    setComparedCount(0);
+    setNumOfSorted(0);
+    setSorted([]);
+  }
+
   if (left < right) {
     const mid = Math.floor(left + (right - left) / 2);
-    await mergeSort(arr, left, mid, setArray, setComparing, speed);
-    await mergeSort(arr, mid + 1, right, setArray, setComparing, speed);
-    await merge(arr, left, mid, right, setArray, setComparing, speed);
+
+    await mergeSort(
+      arr,
+      left,
+      mid,
+      setArray,
+      setComparing,
+      speed,
+      setSwapCount,
+      setNumOfSorted,
+      setComparedCount,
+      setSwapping,
+      setSorted
+    );
+    await mergeSort(
+      arr,
+      mid + 1,
+      right,
+      setArray,
+      setComparing,
+      speed,
+      setSwapCount,
+      setNumOfSorted,
+      setComparedCount,
+      setSwapping,
+      setSorted
+    );
+    await merge(
+      arr,
+      left,
+      mid,
+      right,
+      setArray,
+      setComparing,
+      speed,
+      setSwapCount,
+      setNumOfSorted,
+      setComparedCount,
+      setSwapping,
+      setSorted
+    );
   }
-  setComparing(Array.from({ length: arr.length }, (_, idx) => idx));
 };
 
 const merge = async (
@@ -25,50 +74,71 @@ const merge = async (
   right: number,
   setArray: React.Dispatch<React.SetStateAction<number[]>>,
   setComparing: React.Dispatch<React.SetStateAction<number[]>>,
-  speed: number
+  speed: number,
+  setSwapCount: React.Dispatch<React.SetStateAction<number>>,
+  setNumOfSorted: React.Dispatch<React.SetStateAction<number>>,
+  setComparedCount: React.Dispatch<React.SetStateAction<number>>,
+  setSwapping: React.Dispatch<React.SetStateAction<number[]>>,
+  setSorted: React.Dispatch<React.SetStateAction<number[]>>
 ) => {
-  const n1 = mid - left + 1;
-  const n2 = right - mid;
-
-  const L = new Array(n1);
-  const R = new Array(n2);
-
-  for (let i = 0; i < n1; i++) {
-    L[i] = arr[left + i];
-  }
-  for (let j = 0; j < n2; j++) {
-    R[j] = arr[mid + 1 + j];
-  }
-
-  let i = 0,
-    j = 0;
+  const tempArray = [...arr];
+  let i = left;
+  let j = mid + 1;
   let k = left;
 
-  while (i < n1 && j < n2) {
-    setComparing([left + i, mid + 1 + j]);
+  while (i <= mid && j <= right) {
+    setComparing([i, j]);
+    setComparedCount((prev) => prev + 1);
     await delay(speed);
-    if (L[i] <= R[j]) {
-      arr[k] = L[i];
+
+    if (tempArray[i] <= tempArray[j]) {
+      setSwapping([k]);
+      arr[k] = tempArray[i];
       i++;
     } else {
-      arr[k] = R[j];
+      setSwapping([k]);
+      arr[k] = tempArray[j];
       j++;
     }
     setArray([...arr]);
+    if (arr[k] !== tempArray[k]) {
+      setSwapCount((prev) => prev + 1);
+    }
+    await delay(speed);
     k++;
   }
 
-  while (i < n1) {
-    arr[k] = L[i];
+  while (i <= mid) {
+    setSwapping([k]);
+    arr[k] = tempArray[i];
     setArray([...arr]);
+    if (arr[k] !== tempArray[k]) {
+      setSwapCount((prev) => prev + 1);
+    }
+    await delay(speed);
     i++;
     k++;
   }
 
-  while (j < n2) {
-    arr[k] = R[j];
+  while (j <= right) {
+    setSwapping([k]);
+    arr[k] = tempArray[j];
     setArray([...arr]);
+    if (arr[k] !== tempArray[k]) {
+      setSwapCount((prev) => prev + 1);
+    }
+    await delay(speed);
     j++;
     k++;
   }
+
+  if (right - left + 1 === arr.length) {
+    for (let i = left; i <= right; i++) {
+      setSorted((prev) => [...prev, i]);
+    }
+    setNumOfSorted(right - left + 1);
+  }
+
+  setComparing([-1, -1]);
+  setSwapping([]);
 };

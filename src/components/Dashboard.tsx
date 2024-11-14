@@ -15,6 +15,8 @@ import { selectionSort } from "@/lib/selectionSort";
 import { insertionSort } from "@/lib/insertionSort";
 import { mergeSort } from "@/lib/mergeSort";
 import { bogoSort } from "@/lib/bogoSort";
+import { heapSort } from "@/lib/heapSort";
+import { shellSort } from "@/lib/shellSort";
 
 const Dashboard = () => {
   const [array, setArray] = useState<number[]>([]);
@@ -26,12 +28,13 @@ const Dashboard = () => {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string | null>("Bubble sort");
   const [arraySize, setArraySize] = useState(50);
   const [maxValue, setMaxValue] = useState(200);
-  const [speed, setSpeed] = useState(50);
+  const [speed, setSpeed] = useState(250); // Changed initial state to match default value
   const [sortingDuration, setSortingDuration] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [comparedCount, setComparedCount] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [numOfSorted, setNumOfSorted] = useState(0);
+  const [swapping, setSwapping] = useState<number[]>([]);
 
   useEffect(() => {
     generate("Random");
@@ -95,22 +98,101 @@ const Dashboard = () => {
       setElapsedTime((currentTime - startTime) / 1000);
     }, 100);
 
-    // TODO: isDelay needs to be checked
     switch (selectedAlgorithm) {
       case "Bubble sort":
-        await bubbleSort([...array], setArray, setComparing, setSwapCount, speed, setNumOfSorted, setComparedCount);
+        await bubbleSort(
+          [...array],
+          setArray,
+          setComparing,
+          setSwapCount,
+          speed,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
         break;
       case "Quicksort":
-        await quickSort([...array], 0, array.length - 1, setArray, setComparing, speed);
+        await quickSort(
+          [...array],
+          0,
+          array.length - 1,
+          setArray,
+          setComparing,
+          speed,
+          setSwapCount,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
         break;
       case "Selection sort":
-        await selectionSort([...array], setArray, setComparing, speed);
+        await selectionSort(
+          [...array],
+          setArray,
+          setComparing,
+          speed,
+          setSwapCount,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
         break;
       case "Insertion sort":
-        await insertionSort([...array], setArray, setComparing, speed);
+        await insertionSort(
+          [...array],
+          setArray,
+          setComparing,
+          speed,
+          setSwapCount,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
         break;
       case "Merge sort":
-        await mergeSort([...array], 0, array.length - 1, setArray, setComparing, speed);
+        await mergeSort(
+          [...array],
+          0,
+          array.length - 1,
+          setArray,
+          setComparing,
+          speed,
+          setSwapCount,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
+        break;
+      case "Heap sort":
+        await heapSort(
+          [...array],
+          setArray,
+          setComparing,
+          speed,
+          setSwapCount,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
+        break;
+      case "Shell sort":
+        await shellSort(
+          [...array],
+          setArray,
+          setComparing,
+          speed,
+          setSwapCount,
+          setNumOfSorted,
+          setComparedCount,
+          setSwapping,
+          setSorted
+        );
         break;
       case "Bogosort":
         await bogoSort([...array], setArray, speed);
@@ -131,7 +213,7 @@ const Dashboard = () => {
   return (
     <main className="flex flex-col rounded-box mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-8 indicator">
       <span className="indicator-item badge badge-secondary text-secondary-content">welcome</span>
-      <div className="font-bold text-2xl">Dashboard 🪄 </div>
+      <div className="font-bold text-2xl">Dashboard 🪄</div>
       <div className="mt-4 flex justify-start space-x-4">
         {/* SETTINGS SECTION START */}
         <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1] indicator">
@@ -154,6 +236,8 @@ const Dashboard = () => {
                     <option value={"Selection sort"}>Selection sort</option>
                     <option value={"Insertion sort"}>Insertion sort</option>
                     <option value={"Merge sort"}>Merge sort</option>
+                    <option value={"Heap sort"}>Heap sort</option>
+                    <option value={"Shell sort"}>Shell sort</option>
                     <option value={"Bogosort"}>Bogosort</option>
                   </select>
                 </label>
@@ -206,10 +290,9 @@ const Dashboard = () => {
                       const value = Number(e.target.value);
                       setSpeed(value);
                     }}
-                    defaultValue={50}
+                    defaultValue={250}
                   >
                     <option value={0}>0</option>
-                    <option value={10}>10</option>
                     <option value={50}>50</option>
                     <option value={100}>100</option>
                     <option value={250}>250</option>
@@ -263,7 +346,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 gap-4 mt-4">
               <button onClick={run} disabled={isSorting} className="btn btn-sm btn-primary">
                 {isSorting ? (
-                  <span className="loading loading-infinity loading-lg"></span>
+                  <span className="loading loading-infinity loading-lg h-full"></span>
                 ) : (
                   <span className="leading-3">Run</span>
                 )}
@@ -316,7 +399,7 @@ const Dashboard = () => {
         </div>
         {/* INFO SECTION END */}
       </div>
-      <Chart array={array} sorted={sorted} isSorted={isSorted} comparing={comparing} />
+      <Chart array={array} sorted={sorted} isSorted={isSorted} comparing={comparing} swapping={swapping} />
     </main>
   );
 };
