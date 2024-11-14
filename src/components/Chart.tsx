@@ -1,5 +1,5 @@
 "use client";
-import React from "react"; // Removed unused useState import
+import React from "react";
 
 interface ChartProps {
   array: number[];
@@ -25,6 +25,30 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapp
     }
     return "bg-primary";
   };
+
+  // Show skeleton if array is empty
+  if (array.length === 0) {
+    return (
+      <div className="w-full max-w-full mt-4">
+        <div
+          className="flex items-end justify-center bg-base-300 rounded-box p-4 border border-white/[0.1]"
+          style={{ height: `${200 + HEIGHT_PADDING}px` }}
+        >
+          {[...Array(50)].map((_, idx) => (
+            <div
+              key={idx}
+              className="animate-pulse mx-[1px] rounded-badge"
+              style={{
+                width: `${BAR_WIDTH}px`,
+                height: `${Math.random() * 150 + 50}px`,
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-full mt-4">
