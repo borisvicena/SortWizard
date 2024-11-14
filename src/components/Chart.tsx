@@ -7,10 +7,10 @@ interface ChartProps {
   isSorted: boolean;
   comparing: number[];
   swapping: number[];
+  height: number;
 }
 
-const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapping }) => {
-  const maxHeight = Math.max(...array) || 0;
+const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapping, height }) => {
   const BAR_WIDTH = 10;
   const BAR_MARGIN = 1;
   const HEIGHT_PADDING = 50;
@@ -56,7 +56,7 @@ const Chart: React.FC<ChartProps> = ({ array, sorted, isSorted, comparing, swapp
         className={`flex items-end justify-center bg-base-300 rounded-box p-4 border ${
           isSorted ? "border-success" : "border-white/[0.1]"
         }`}
-        style={{ height: `${maxHeight + HEIGHT_PADDING}px` }}
+        style={{ height: `${height + HEIGHT_PADDING}px` }}
       >
         {array.map((value, idx) => (
           <div

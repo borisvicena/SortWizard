@@ -400,7 +400,14 @@ const Dashboard = () => {
         </div>
         {/* INFO SECTION END */}
       </div>
-      <Chart array={array} sorted={sorted} isSorted={isSorted} comparing={comparing} swapping={swapping} />
+      <Chart
+        array={array}
+        sorted={sorted}
+        isSorted={isSorted}
+        comparing={comparing}
+        swapping={swapping}
+        height={maxValue}
+      />
       <Algorithms selectedAlgorithm={selectedAlgorithm} />
     </main>
   );
