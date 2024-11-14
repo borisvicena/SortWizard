@@ -17,6 +17,7 @@ import { mergeSort } from "@/lib/mergeSort";
 import { bogoSort } from "@/lib/bogoSort";
 import { heapSort } from "@/lib/heapSort";
 import { shellSort } from "@/lib/shellSort";
+import Algorithms from "./Algorithms";
 
 const Dashboard = () => {
   const [array, setArray] = useState<number[]>([]);
@@ -400,6 +401,7 @@ const Dashboard = () => {
         {/* INFO SECTION END */}
       </div>
       <Chart array={array} sorted={sorted} isSorted={isSorted} comparing={comparing} swapping={swapping} />
+      <Algorithms selectedAlgorithm={selectedAlgorithm} />
     </main>
   );
 };
