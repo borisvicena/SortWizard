@@ -213,14 +213,13 @@ const Dashboard = () => {
 
   return (
     <main className="flex flex-col rounded-box mt-4 md:mt-12 w-full max-w-7xl mx-auto bg-base-200 border border-white/[0.1] p-4 md:p-8 indicator">
-      <span className="indicator-item badge badge-secondary text-secondary-content">welcome</span>
+      <span className="indicator-item badge badge-secondary text-secondary-content">welcome 🎃</span>
       <div className="font-bold text-xl md:text-2xl">Dashboard 🪄</div>
 
       {/* Make the sections stack on mobile */}
       <div className="mt-4 flex flex-col lg:flex-row justify-start space-y-4 lg:space-y-0 lg:space-x-4">
         {/* SETTINGS SECTION */}
-        <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1] indicator">
-          <span className="indicator-item indicator-center badge badge-info text-info-content">more coming soon</span>
+        <div className="p-4 bg-base-300 w-full rounded-box border border-white/[0.1]">
           <div className="w-full">
             <div className="text-base font-bold">Settings</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
