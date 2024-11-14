@@ -6,6 +6,8 @@ import { SiBuymeacoffee } from "react-icons/si";
 import { useState } from "react";
 
 const Navbar = () => {
+  const [isReloading, setIsReloading] = useState(false);
+
   const createHeart = () => {
     const heart = document.createElement("div");
     heart.innerHTML = "❤️";
@@ -24,6 +26,33 @@ const Navbar = () => {
     for (let i = 0; i < 12; i++) {
       setTimeout(createHeart, i * 150);
     }
+  };
+
+  const handleReload = () => {
+    setIsReloading(true);
+
+    // Create sparkle effect before reload
+    const createSparkle = () => {
+      const sparkle = document.createElement("div");
+      sparkle.innerHTML = "✨";
+      sparkle.style.position = "fixed";
+      sparkle.style.left = Math.random() * 100 + "vw";
+      sparkle.style.top = Math.random() * 100 + "vh";
+      sparkle.style.animationDuration = Math.random() * 1 + 1 + "s";
+      sparkle.className = "falling-sparkle";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    };
+
+    // Create multiple sparkles
+    for (let i = 0; i < 15; i++) {
+      setTimeout(createSparkle, i * 100);
+    }
+
+    // Reload after animation
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
   };
 
   return (
@@ -46,7 +75,13 @@ const Navbar = () => {
         </div>
         <div className="flex flex-grow justify-center">
           <div className="tooltip tooltip-bottom" data-tip="Let's Sort Things Out 🔮">
-            <button className="btn btn-primary text-base">Sort Magic</button>
+            <button
+              onClick={handleReload}
+              disabled={isReloading}
+              className={`btn btn-primary text-base ${isReloading ? "animate-spin" : ""}`}
+            >
+              {isReloading ? "🔮" : "Sort Magic"}
+            </button>
           </div>
         </div>
         <div className="tooltip tooltip-bottom" data-tip="Github Repository">
